@@ -15,5 +15,35 @@
     {%else%}
     <p>You are a minor.</p>
     {%endif%}
+
+    <h2>Marks</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr >
+            <th>ID</th>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Gread</th>
+        </tr>
+        {% for mark in marks %}
+        <tr>
+            <td>{{ mark.id }}</td>
+            <td>{{ mark.subject }}</td>
+            <td>{{ mark.marks }}</td>
+        <td>
+            {% if mark.marks >= 80 %}
+                A+
+            {% elif mark.marks >= 70 %}
+                A
+            {% elif mark.marks >= 60 %}
+                B
+            {% elif mark.marks >= 50 %}
+                C
+            {% else %}
+                D
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
