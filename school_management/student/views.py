@@ -9,4 +9,8 @@ from django.shortcuts import render
 #     return HttpResponse("profile page   ")
 
 def profile(request):
-    return render(request, 'student/index.html')
+    user_data={
+        "name":"samaul islam",
+        "age":6,
+    }
+    return render(request, 'student/index.html', user_data)
