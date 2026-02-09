@@ -44,4 +44,4 @@ def profile(request):
         }
 ]
     user_data["marks"] = marks
-    return render(request, 'student/index.html',{"marks":marks})
+    return render(request, 'student/index.html',{"marks":marks,"age":22,"name":"samaul islam","list":[1,2,3,4,5,6],"fruits":["apple","banana","orange"]})
