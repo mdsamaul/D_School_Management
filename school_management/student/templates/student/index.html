@@ -1,11 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Dashboard</title>
-</head>
-<body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="container mt-5">
     <h1>Student Dashboard</h1>
     <p>Welcome to the student dashboard.pppppppppppppp</p>
     <p>Name: {{ name }}</p>
@@ -14,38 +20,157 @@
     <p>You are an adult.</p>
     {%else%}
     <p>You are a minor.</p>
-    {%endif%}
-
-    {{ age | add:"5" }}
+    {%endif%} {{ age | add:"5" }}
 
     <h2>Marks</h2>
     <table border="1" cellpadding="5" cellspacing="0">
-        <tr >
-            <th>ID</th>
-            <th>Subject</th>
-            <th>Marks</th>
-            <th>Gread</th>
-        </tr>
-        {% for mark in marks %}
-        <tr>
-            <td>{{ mark.id }}</td>
-            <td>{{ mark.subject }}</td>
-            <td>{{ mark.marks }}</td>
+      <tr>
+        <th>ID</th>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>Gread</th>
+      </tr>
+      {% for mark in marks %}
+      <tr>
+        <td>{{ mark.id }}</td>
+        <td>{{ mark.subject }}</td>
+        <td>{{ mark.marks }}</td>
         <td>
-            {% if mark.marks >= 80 %}
-                A+
-            {% elif mark.marks >= 70 %}
-                A
-            {% elif mark.marks >= 60 %}
-                B
-            {% elif mark.marks >= 50 %}
-                C
-            {% else %}
-                D
-            {% endif %}
+          {% if mark.marks >= 80 %} A+ {% elif mark.marks >= 70 %} A {% elif
+          mark.marks >= 60 %} B {% elif mark.marks >= 50 %} C {% else %} D 
+          {%endif %}
         </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <form action="{% url 'add_student' %}" method="post">
+      {% csrf_token %}
+      <div class="row g-2">
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="name"
+              name="name"
+              placeholder="Name"
+            />
+            <label for="name">Name</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              id="roll"
+              name="roll"
+              placeholder="Roll"
+            />
+            <label for="roll">Roll</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="father_name"
+                name="father_name"
+              placeholder="Father Name"
+            />
+            <label for="father_name">Father Name</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm mt-3">
+        Add Student
+      </button>
+    </form>
+
+    {% comment %} <form action="{% url 'edit_student' student.id %}" method="post">
+      {% csrf_token %}
+      <div class="row g-2">
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="name"
+              name="name"
+              value="{{ student.name }}"
+              placeholder="Name"
+            />
+            <label for="name">Name</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              id="roll"
+              name="roll"
+              value="{{ student.roll }}"
+              placeholder="Roll"
+            />
+            <label for="roll">Roll</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="father_name"
+                name="father_name"
+                value="{{ student.father_name }}"
+              placeholder="Father Name"
+            />
+            <label for="father_name">Father Name</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm mt-3">
+        update Student
+      </button>
+    </form> {% endcomment %}
+
+    <table class="table table-striped container">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Name</th>
+          <th>Roll</th>
+          <th>Father Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for student in student_list%}
+        <tr>
+          <td>{{ student.id }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.roll }}</td>
+          <td>{{ student.father_name }}</td>
+          <td>
+            <a href="{% url 'edit_student' student.id %}" class="btn btn-primary btn-sm">Edit</a>
+            <a
+              class="btn btn-danger btn-sm"
+              href="{% url 'delete_student' student.id %}"
+              >Delete</a
+            >
+          </td>
         </tr>
         {% endfor %}
+      </tbody>
     </table>
-</body>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
